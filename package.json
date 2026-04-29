@@ -1,6 +1,6 @@
 {
   "name": "hereya-ai-dev",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Remote MCP server that lets an AI agent operate Hereya on behalf of a connected user.",
   "scripts": {

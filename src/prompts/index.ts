@@ -40,7 +40,7 @@ const PROMPTS: PromptDef[] = [
   },
 ];
 
-function loadPromptText(filename: string): string {
+export function loadPromptText(filename: string): string {
   // Prompts are copied into <build-output>/prompts/*.md by scripts/copy-prompts.js.
   // After esbuild bundles src/handler.ts → dist/handler.js, __dirname at runtime
   // is the directory containing handler.js (i.e. dist/). The prompts/ subfolder

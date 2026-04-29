@@ -7,12 +7,13 @@ interface RegistryAccess {
 }
 
 describe("createServer", () => {
-  it("registers both tools", () => {
+  it("registers all three tools", () => {
     const server = createServer();
     const registry = server as unknown as RegistryAccess;
     const toolNames = Object.keys(registry._registeredTools);
     expect(toolNames).toEqual(
       expect.arrayContaining([
+        "get_instructions",
         "list_authorized_workspaces",
         "mint_workspace_token",
       ])

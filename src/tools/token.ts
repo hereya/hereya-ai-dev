@@ -24,7 +24,10 @@ export function registerMintTokenTool(server: McpServer) {
         "this MCP server.\n" +
         "  - 403 → the requested workspace is not in the user's consented " +
         "set. Tell the user to disconnect and reconnect this MCP server and " +
-        "include the missing workspace in the consent screen.",
+        "include the missing workspace in the consent screen.\n\n" +
+        "If you are about to run a Hereya CLI command and aren't sure of the " +
+        "exact flags or the right workspace to mint for, call `get_instructions` " +
+        "first — it returns the canonical step-by-step workflow.",
       inputSchema: {
         workspace_id: z
           .string()

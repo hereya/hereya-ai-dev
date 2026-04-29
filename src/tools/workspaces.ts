@@ -21,7 +21,12 @@ export function registerListWorkspacesTool(server: McpServer) {
         "  - `true` → deploy workspaces (use as `--deployWorkspace` at init " +
         "time and `-w` for `hereya deploy`).\n\n" +
         "Filter on this flag when asking the user to pick a default vs a " +
-        "deploy workspace.",
+        "deploy workspace.\n\n" +
+        "This tool is one of three — pair it with `mint_workspace_token` and " +
+        "`get_instructions` to drive the full Hereya app lifecycle. If you " +
+        "are not sure how to use the workspaces returned here, call " +
+        "`get_instructions` (no arguments) to see the catalog of available " +
+        "workflow guides.",
       inputSchema: {},
     },
     async (_args, { authInfo }) => {
