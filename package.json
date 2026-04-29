@@ -1,0 +1,25 @@
+{
+  "name": "hereya-ai-dev",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Remote MCP server that lets an AI agent operate Hereya on behalf of a connected user.",
+  "scripts": {
+    "build:prompts": "node scripts/copy-prompts.js",
+    "build:handler": "esbuild src/handler.ts --bundle --platform=node --target=node22 --format=cjs --outfile=dist/handler.js --external:aws-sdk",
+    "build": "npm run build:prompts && npm run build:handler",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8",
+    "@types/node": "^22",
+    "esbuild": "^0.25",
+    "typescript": "^5",
+    "vitest": "^4.1.5"
+  }
+}

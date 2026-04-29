@@ -1,0 +1,21 @@
+name: hereya/ai-dev
+version: 0.1.0
+description: "Remote MCP server that lets an AI agent operate Hereya on behalf of a connected user (list authorized workspaces + mint short-lived workspace-scoped CLI tokens)."
+kind: app
+visibility: private
+parameters:
+  customDomain:
+    description: "Custom domain that will front the deployed MCP server (e.g. ai-dev.hereyalab.dev). Provisioned by aws-user-mcp-lambda as an API Gateway custom domain (with ACM cert + Route53 alias)."
+    mandatory: true
+  oauthServerUrl:
+    description: "Hereya Cloud OAuth issuer URL the deployed MCP authenticates against. Override only when deploying against a non-prod cloud."
+    mandatory: false
+    default: "https://cloud.hereya.dev"
+  hereyaCloudApiUrl:
+    description: "Hereya Cloud API base URL used by tool handlers (e.g. /api/workspaces/me, /api/tokens/workspace). Override only when deploying against a non-prod cloud."
+    mandatory: false
+    default: "https://cloud.hereya.dev"
+  lambdaTimeout:
+    description: "Lambda execution timeout in seconds. Default 30s — tool handlers only do quick HTTPS calls to hereya-cloud."
+    mandatory: false
+    default: "30"
