@@ -10,7 +10,7 @@ export function registerMintTokenTool(server: McpServer) {
       description:
         "Mint a short-lived (≤1 hour) Hereya CLI token scoped to a single " +
         "workspace. Pass the returned `token` to any `hereya` CLI command via " +
-        "`--token <token>` (e.g. `npx hereya up --token <token>`).\n\n" +
+        "`--token <token>` (e.g. `npx -y hereya-cli up --token <token>`).\n\n" +
         "Mint immediately before each CLI invocation — do NOT cache tokens " +
         "across multiple commands or store them. The server caps lifetime at " +
         "1 hour and there is no refresh: when a CLI command fails with an " +

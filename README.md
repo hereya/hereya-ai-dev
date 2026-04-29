@@ -11,7 +11,7 @@ Two MCP tools and four MCP prompts. The tools are everything the agent needs to 
 | Tool | Calls | Purpose |
 |---|---|---|
 | `list_authorized_workspaces` | `GET /api/workspaces/me` | List Hereya workspaces the user consented to during OAuth. Each carries a `markedForDeployment` flag. |
-| `mint_workspace_token` | `POST /api/tokens/workspace` | Mint a short-lived (≤1h) workspace-scoped Hereya CLI token. Pass it to `npx hereya … --token <token>`. |
+| `mint_workspace_token` | `POST /api/tokens/workspace` | Mint a short-lived (≤1h) workspace-scoped Hereya CLI token. Pass it to `npx -y hereya-cli … --token <token>`. |
 
 ### Prompts
 
@@ -28,7 +28,7 @@ Agent   ──MCP   ──▶ hereya-ai-dev      (forwards user token in bearer)
                   └──▶ list_authorized_workspaces / mint_workspace_token
                        └──▶ cloud.hereya.dev (same user token)
                             └──▶ returns workspace-scoped CLI token (≤1h)
-Agent   ──CLI  ──▶ npx hereya … --token <CLI token>
+Agent   ──CLI  ──▶ npx -y hereya-cli … --token <CLI token>
 ```
 
 The user controls which workspaces are usable by picking them on the OAuth consent screen. Add or remove workspaces by disconnecting and reconnecting this MCP server.

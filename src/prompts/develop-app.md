@@ -19,7 +19,7 @@ Mint **immediately before** the next CLI command. Tokens last at most 1 hour and
 From the project directory:
 
 ```
-npx hereya up --token <minted-token>
+npx -y hereya-cli up --token <minted-token>
 ```
 
 This applies the infrastructure declared in `hereya.yaml` (databases, queues, secrets, etc.) into the default workspace. The command can be long-running (minutes).
@@ -27,7 +27,7 @@ This applies the infrastructure declared in `hereya.yaml` (databases, queues, se
 ## 4. Run the dev process
 
 ```
-npx hereya run --token <minted-token> -- dev start
+npx -y hereya-cli run --token <minted-token> -- dev start
 ```
 
 `--token` is an oclif top-level flag on `run` and **must** appear before `--`. The `--` separates oclif's own arguments from the user-defined dev command — anything after `--` is forwarded to the script invoked by `hereya run`. For starter templates, `dev start` typically launches the app with hot-reload. Mint a fresh token for this command — do not reuse the one from `hereya up`.
@@ -37,7 +37,7 @@ npx hereya run --token <minted-token> -- dev start
 Each time you call a `hereya` CLI command, mint a fresh token first. Pattern:
 
 ```
-mint_workspace_token → npx hereya … --token <token>
+mint_workspace_token → npx -y hereya-cli … --token <token>
 ```
 
 If a CLI command fails with an authentication / expired-token error, the token TTL elapsed mid-command. Mint a new token and retry.
@@ -46,8 +46,8 @@ For long-running operations like `hereya up`, expect the command itself to finis
 
 ## 6. Common follow-ups
 
-- **Add a package**: edit `hereya.yaml`, then re-run `npx hereya up --token <fresh-token>`.
-- **Tear down dev infra**: `npx hereya down --token <fresh-token>` (workspace-scoped — only affects the default workspace).
-- **Inspect state**: `npx hereya state list --token <fresh-token>`.
+- **Add a package**: edit `hereya.yaml`, then re-run `npx -y hereya-cli up --token <fresh-token>`.
+- **Tear down dev infra**: `npx -y hereya-cli down --token <fresh-token>` (workspace-scoped — only affects the default workspace).
+- **Inspect state**: `npx -y hereya-cli state list --token <fresh-token>`.
 
 When the user is ready to ship, switch to the `deploy-app` flow.

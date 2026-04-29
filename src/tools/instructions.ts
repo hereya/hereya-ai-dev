@@ -14,28 +14,28 @@ const TOPICS: TopicDef[] = [
     slug: "create-app",
     title: "Create a Hereya app",
     summary:
-      "Scaffold a new Hereya app from a GitHub source template. Step-by-step: pick a default workspace and a deploy workspace, mint a token, run the canonical `npx hereya init` command.",
+      "Scaffold a new Hereya app from a GitHub source template. Step-by-step: pick a default workspace and a deploy workspace, mint a token, run the canonical `npx -y hereya-cli init` command.",
     filename: "create-app.md",
   },
   {
     slug: "develop-app",
     title: "Develop a Hereya app",
     summary:
-      "Provision development infrastructure with `npx hereya up` and run the dev loop with `npx hereya run -- dev start`. Mint a fresh workspace token immediately before each CLI command.",
+      "Provision development infrastructure with `npx -y hereya-cli up` and run the dev loop with `npx -y hereya-cli run -- dev start`. Mint a fresh workspace token immediately before each CLI command.",
     filename: "develop-app.md",
   },
   {
     slug: "deploy-app",
     title: "Deploy a Hereya app",
     summary:
-      "Mint a token for a deploy workspace, run `npx hereya deploy`, then commit and push. Includes how to react to non-deploy-workspace validation errors.",
+      "Mint a token for a deploy workspace, run `npx -y hereya-cli deploy`, then commit and push. Includes how to react to non-deploy-workspace validation errors.",
     filename: "deploy-app.md",
   },
   {
     slug: "git-workflow",
     title: "Git workflow for Hereya projects",
     summary:
-      "How `npx hereya init -t hereya/github-private-repo` wires a git credential helper so normal `git add/commit/push` works with no extra setup.",
+      "How `npx -y hereya-cli init -t hereya/github-private-repo` wires a git credential helper so normal `git add/commit/push` works with no extra setup.",
     filename: "git-workflow.md",
   },
 ];
@@ -51,7 +51,7 @@ export function registerGetInstructionsTool(server: McpServer) {
         "Returns step-by-step Hereya workflow instructions for AI agents. " +
         "**Call this immediately after the user asks to create, develop, or deploy a Hereya app** — " +
         "it returns the canonical CLI commands and explains how to use the other tools in this server. " +
-        "Always call this before invoking any `npx hereya …` command if you are not 100% sure of the exact " +
+        "Always call this before invoking any `npx -y hereya-cli …` command if you are not 100% sure of the exact " +
         "flag layout — the instructions are the single source of truth.\n\n" +
         "Inputs:\n" +
         "  - `topic` (optional): one of `create-app`, `develop-app`, `deploy-app`, `git-workflow`. " +

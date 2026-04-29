@@ -1,6 +1,6 @@
 # hereya-ai-dev
 
-Remote MCP server (deployed on AWS Lambda via `hereya/aws-user-mcp-lambda`) that lets an AI agent operate Hereya on behalf of a connected user. The user authenticates via OAuth at `https://cloud.hereya.dev`; the agent then calls MCP tools to (a) list the workspaces the user consented to and (b) mint short-lived workspace-scoped Hereya CLI tokens. The agent runs `npx hereya …` commands with `--token <minted-token>` to drive Hereya itself.
+Remote MCP server (deployed on AWS Lambda via `hereya/aws-user-mcp-lambda`) that lets an AI agent operate Hereya on behalf of a connected user. The user authenticates via OAuth at `https://cloud.hereya.dev`; the agent then calls MCP tools to (a) list the workspaces the user consented to and (b) mint short-lived workspace-scoped Hereya CLI tokens. The agent runs `npx -y hereya-cli …` commands with `--token <minted-token>` to drive Hereya itself.
 
 ## Quick commands
 
@@ -46,7 +46,7 @@ npm run build       # copy prompts → dist/prompts/, esbuild handler → dist/h
 Two tiers of token, both minted by `hereya-cloud`:
 
 1. **User-level OAuth access token** (kind: `user`, RS256). Issued by `https://cloud.hereya.dev/oauth/{authorize,token,register}`. Travels in the bearer of every MCP request and authenticates the tool calls in this server.
-2. **Workspace-scoped CLI token** (kind: `cli`, capped at 1 hour by the server). Minted via `mint_workspace_token`. The agent passes it to `npx hereya … --token <…>` invocations. There is no refresh — when it expires, mint another.
+2. **Workspace-scoped CLI token** (kind: `cli`, capped at 1 hour by the server). Minted via `mint_workspace_token`. The agent passes it to `npx -y hereya-cli … --token <…>` invocations. There is no refresh — when it expires, mint another.
 
 The set of workspaces the user consented to is enforced by `/api/workspaces/me` (returns only consented workspaces) and `/api/tokens/workspace` (403s on non-consented `workspace_id`). To change the set, the user disconnects and reconnects this MCP server.
 

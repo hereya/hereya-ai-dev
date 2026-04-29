@@ -18,7 +18,7 @@ export function registerListWorkspacesTool(server: McpServer) {
         "Each workspace has a `markedForDeployment` flag:\n" +
         "  - `false` → development / default workspaces (use as `-w` for " +
         "`hereya init` and `hereya up`).\n" +
-        "  - `true` → deploy workspaces (use as `--deployWorkspace` at init " +
+        "  - `true` → deploy workspaces (use as `--deploy-workspace` at init " +
         "time and `-w` for `hereya deploy`).\n\n" +
         "Filter on this flag when asking the user to pick a default vs a " +
         "deploy workspace.\n\n" +

@@ -6,7 +6,7 @@ Use this flow when the user wants to deploy a Hereya app from their local checko
 
 Deployment runs against a workspace marked for deployment. To find one, call `list_authorized_workspaces` and present only entries with `markedForDeployment === true`. If none exist, the user did not authorize a deploy workspace during OAuth — tell them to disconnect and reconnect this MCP server and include a deploy workspace in the consent set.
 
-The deploy workspace is also recorded in the project's `hereya.yaml` (set via `--deployWorkspace` at `hereya init` time). Confirm with the user that they want to deploy to that workspace, or pick another from the list.
+The deploy workspace is also recorded in the project's `hereya.yaml` (set via `--deploy-workspace` at `hereya init` time). Confirm with the user that they want to deploy to that workspace, or pick another from the list.
 
 ## 2. Mint a token for the deploy workspace
 
@@ -21,7 +21,7 @@ Mint immediately before the deploy command — tokens last at most 1 hour.
 From the project directory:
 
 ```
-npx hereya deploy -w <deploy-workspace> --token <minted-token>
+npx -y hereya-cli deploy -w <deploy-workspace> --token <minted-token>
 ```
 
 Substitutions:

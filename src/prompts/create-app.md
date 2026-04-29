@@ -9,7 +9,7 @@ Ask the user for:
 - **App slug** in `org/repo` form (e.g. `acme/orders`). The `org` is a Hereya organization the user belongs to; `repo` is the GitHub repo the template will create.
 - **Source template** in `<github-org>/<repo>` form (e.g. `hereya/lambda-mcp-starter`). This is the upstream starter the new repo will be cloned from. It is passed to `hereya init` as `--parameter sourceTemplate=<sourceTemplate>`.
 - **Default workspace** — the workspace where development infrastructure will live (the `-w` flag for `hereya init` and `hereya up`). Pick from workspaces with `markedForDeployment=false`.
-- **Deploy workspace** — the workspace where the app will eventually be deployed (the `--deployWorkspace` flag for `hereya init` and the `-w` flag for `hereya deploy`). Pick from workspaces with `markedForDeployment=true`.
+- **Deploy workspace** — the workspace where the app will eventually be deployed (the `--deploy-workspace` flag for `hereya init` and the `-w` flag for `hereya deploy`). Pick from workspaces with `markedForDeployment=true`.
 
 ## 2. Discover workspaces
 
@@ -33,8 +33,8 @@ Capture the returned `token` — you will pass it as `--token <token>` to the CL
 ## 4. Run `hereya init`
 
 ```
-npx hereya init <org>/<app> \
-  --deployWorkspace <deploy-ws> \
+npx -y hereya-cli init <org>/<app> \
+  --deploy-workspace <deploy-ws> \
   -w <default-ws> \
   --template hereya/github-private-repo \
   --parameter sourceTemplate=<sourceTemplate> \
