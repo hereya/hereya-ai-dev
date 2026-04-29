@@ -1,4 +1,4 @@
 deploy:
   hereya/aws-user-mcp-lambda:
-    version: 0.1.0
+    version: 0.2.0
 preDeployCommand: npm install && npm run build
