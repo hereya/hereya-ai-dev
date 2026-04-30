@@ -38,15 +38,24 @@ The CLI validates that the target workspace is a deploy workspace. **A non-deplo
 
 ## 4. Commit and push
 
-After `hereya deploy` succeeds, walk the user through committing and pushing the project:
+After `hereya deploy` succeeds, walk the user through committing and pushing the project. `git add` and `git commit` are local-only and don't need a token; `git push` does — use the `hereya git` wrapper so the credential helper sees the ephemeral token:
 
 ```
 git add -A
 git commit -m "Deploy"
-git push
 ```
 
-The git credential helper was wired automatically when the project was scaffolded with `hereya init -t hereya/github-private-repo`, so `git push` works without any extra credential setup. If push fails with an authentication error, see the `git-workflow` prompt for troubleshooting.
+Then mint a fresh token (re-mint here even if step 2's token is still valid — it's good hygiene to mint immediately before each cloud-touching call) and push:
+
+```
+mint_workspace_token({ workspace_id: <default workspace id> })
+```
+
+```
+npx -y hereya-cli git --token <minted-token> --chdir <project-dir> -- push
+```
+
+The `--` separator is required so git's own flags reach git instead of being parsed by oclif. If push fails with an authentication error, see the `git-workflow` prompt for troubleshooting.
 
 ## 5. Iterate
 

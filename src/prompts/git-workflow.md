@@ -14,32 +14,56 @@ When the project is scaffolded:
    git config credential.helper '!npx -y hereya-cli credential-helper'
    ```
 
-   (The exact form is set by `hereya init`; you can confirm with `git -C <project> config --get-all credential.helper`.)
-
 The credential helper resolves a short-lived GitHub access token from the project metadata each time git asks for credentials. The user does **not** need a personal GitHub token, SSH key, or `gh auth login` to push.
 
-## Day-to-day usage
+## Day-to-day usage with `--token`
 
-Inside the scaffolded project, normal git commands just work — use whatever git tools your environment provides (the host's git CLI, an IDE git pane, etc.):
+Because this MCP server brokers ephemeral tokens (no `hereya login` on the user's machine), every git operation that needs cloud auth — `push`, `pull`, `fetch` — must run through the **`hereya git` wrapper** so the credential helper sees the token.
+
+Pattern: mint a workspace-scoped token, then run git through the wrapper, separating hereya flags from git's own with `--`:
 
 ```
-git status
-git add -A
-git commit -m "..."
-git push
-git pull
+mint_workspace_token({ workspace_id: <default workspace id> })
 ```
 
-This MCP server provides **no git tooling** — there are no MCP tools for `add`, `commit`, `push`, etc. Use the agent's environment-native git tools.
+Then:
+
+```
+npx -y hereya-cli git --token <minted-token> --chdir <project-dir> -- push
+npx -y hereya-cli git --token <minted-token> --chdir <project-dir> -- pull --rebase
+npx -y hereya-cli git --token <minted-token> --chdir <project-dir> -- fetch origin
+```
+
+Notes:
+
+- `--token` is propagated to the credential-helper grandchild via the `HEREYA_EPHEMERAL_TOKEN` env var. This is the only mechanism that makes auth work in MCP-driven flows; plain `git push` will fail with a credential prompt because the helper has no ambient token.
+- `--chdir` sets the cwd of the spawned git. Optional if the agent's shell is already in the project directory.
+- The `--` separator is **required** when git's own arguments include flags (`--rebase`, `-u`, `--depth=1`, etc.). Without it, oclif tries to parse them as hereya flags and rejects them.
+- Mint a fresh token immediately before each git invocation — tokens last at most 1 hour.
+- `git add` and `git commit` do **not** need the wrapper or a token (they don't talk to any remote). The agent can use its environment-native git tools for those:
+  ```
+  git add -A
+  git commit -m "..."
+  ```
+
+## `hereya git clone` for fresh checkouts
+
+When the user wants to pull down an existing Hereya project from GitHub on a new machine (no `hereya init` involved), use:
+
+```
+npx -y hereya-cli git --token <minted-token> -- clone <repo-url> [<target-dir>]
+```
+
+After a successful clone, the wrapper auto-wires the cloned repo to use the hereya credential helper, so subsequent `push`/`pull`/`fetch` from inside that directory work the same way as a freshly-init'd project (still via the wrapper with `--token`).
 
 ## Troubleshooting
 
 If `git push` fails with an authentication error:
 
-- Verify the credential helper is configured: `git -C <project> config --get-all credential.helper` should include an `npx -y hereya-cli credential-helper` entry.
-- If it's missing, the project may have been created outside the `hereya/github-private-repo` template. The user can re-wire it manually with the command shown above, or re-init the project.
-- The credential helper depends on `npx` being available on PATH and on the local Hereya CLI cache having the project's metadata. If the user moved or copied the directory across machines, ask them to run `npx -y hereya-cli state list` once in the project directory to repopulate the cache.
+- Confirm the agent used the wrapper: `npx -y hereya-cli git --token <…> -- push` (NOT plain `git push`).
+- Confirm the token is fresh — re-mint via `mint_workspace_token` and retry.
+- Confirm the credential helper is configured in the local repo: `git -C <project> config --get-all credential.helper` should include `hereya-cli credential-helper`. If it's missing, re-init the project or run `npx -y hereya-cli git --chdir <project> -- clone <url>` into a fresh dir.
 
 ## When NOT to use this server's tools
 
-This MCP server's only tools are `list_authorized_workspaces` and `mint_workspace_token`. They have nothing to do with git itself. Do not call them from a pure git workflow.
+This MCP server's tools (`list_authorized_workspaces`, `mint_workspace_token`, `get_instructions`) are about workspace-scoped Hereya auth — not git semantics. Do not call them from a pure git workflow that doesn't touch a Hereya remote.

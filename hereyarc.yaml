@@ -1,5 +1,5 @@
 name: hereya/ai-dev
-version: 0.4.0
+version: 0.5.0
 description: "Remote MCP server that lets an AI agent operate Hereya on behalf of a connected user (list authorized workspaces + mint short-lived workspace-scoped CLI tokens)."
 kind: app
 visibility: private
